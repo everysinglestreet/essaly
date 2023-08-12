@@ -30,3 +30,15 @@ export const executeOsmosis = async ({ request }: { request: Request }): Promise
     return { metadata: { code: 500, success: false, message: error } };
   }
 };
+
+export const restartOverlay = async (): Promise<EssalyResponse> => {
+  try {
+    const { ESS_TASKING_PATH } = APP_CONFIG;
+    if (Helper.isNullOrUndefined(ESS_TASKING_PATH)) return { metadata: { code: 500, success: false, message: 'Unknown ESSTasking path' } };
+
+    const res = await execute({ command: `cd ${ESS_TASKING_PATH} && task overlay:restart` });
+    return { data: JSON.stringify(res), metadata: { code: 200, success: true } };
+  } catch (error) {
+    return { metadata: { code: 500, success: false, message: error } };
+  }
+};

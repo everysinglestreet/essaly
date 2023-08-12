@@ -1,1 +1,1 @@
-export { executeOsmosis, executeTilemaker } from '@essaly/controller/docker';
+export { executeOsmosis, executeTilemaker, restartOverlay } from '@essaly/controller/docker';

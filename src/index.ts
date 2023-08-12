@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'http';
 
-import { executeOsmosis, executeTilemaker } from '@essaly/controller';
+import { executeOsmosis, executeTilemaker, restartOverlay } from '@essaly/controller';
 import { APP_CONFIG } from '@essaly/util/config';
 import { Request, Response } from 'express';
 
@@ -26,6 +26,11 @@ const main = async (): Promise<void> => {
 
   router.post('/api/executeOsmosis', async (request: Request, response: Response): Promise<void> => {
     const res = await executeOsmosis({ request });
+    response.status(200).setHeader('Content-Type', 'application/json').send(res);
+  });
+
+  router.get('/api/retartOverlay', async (_: Request, response: Response): Promise<void> => {
+    const res = await restartOverlay();
     response.status(200).setHeader('Content-Type', 'application/json').send(res);
   });
 
