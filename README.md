@@ -15,7 +15,7 @@ ESS_TASKING_PATH="" # value for the path to the Tasking repository
 
 ## Start
 
-To start the API, execute `task start &` in the root directory of the project.
+To start the API, execute `task start &!` in the root directory of the project.
 
 ## Stop
 
