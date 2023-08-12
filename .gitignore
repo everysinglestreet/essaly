@@ -132,3 +132,4 @@ dist
 *.
 
 .task
+*.DS_Store
