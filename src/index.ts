@@ -29,7 +29,7 @@ const main = async (): Promise<void> => {
     response.status(200).setHeader('Content-Type', 'application/json').send(res);
   });
 
-  router.get('/api/retartOverlay', async (_: Request, response: Response): Promise<void> => {
+  router.post('/api/retartOverlay', async (_: Request, response: Response): Promise<void> => {
     const res = await restartOverlay();
     response.status(200).setHeader('Content-Type', 'application/json').send(res);
   });
