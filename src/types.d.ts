@@ -15,6 +15,7 @@ export interface EssalyResponse {
 }
 
 export interface ExecuteTilemakerInput {
+  config: string;
   input: string;
   output: string;
 }
