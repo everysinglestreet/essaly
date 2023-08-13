@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'http';
 
-import { executeOsmosis, executeTilemaker, restartOverlay } from '@essaly/controller';
+import { executeOsmosis, executeTilemaker, regenerateOverlay, restartOverlay } from '@essaly/controller';
 import { APP_CONFIG } from '@essaly/util/config';
 import { Request, Response } from 'express';
 
@@ -21,17 +21,22 @@ const main = async (): Promise<void> => {
 
   router.post('/api/executeTilemaker', async (request: Request, response: Response): Promise<void> => {
     const res = await executeTilemaker({ request });
-    response.status(200).setHeader('Content-Type', 'application/json').send(res);
+    response.status(res.metadata.code).setHeader('Content-Type', 'application/json').send(res);
   });
 
   router.post('/api/executeOsmosis', async (request: Request, response: Response): Promise<void> => {
     const res = await executeOsmosis({ request });
-    response.status(200).setHeader('Content-Type', 'application/json').send(res);
+    response.status(res.metadata.code).setHeader('Content-Type', 'application/json').send(res);
   });
 
   router.post('/api/restartOverlay', async (_: Request, response: Response): Promise<void> => {
     const res = await restartOverlay();
-    response.status(200).setHeader('Content-Type', 'application/json').send(res);
+    response.status(res.metadata.code).setHeader('Content-Type', 'application/json').send(res);
+  });
+
+  router.post('/api/regenerateOverlay', async (request: Request, response: Response): Promise<void> => {
+    const res = await regenerateOverlay({ request });
+    response.status(res.metadata.code).setHeader('Content-Type', 'application/json').send(res);
   });
 
   const server = createServer(app);

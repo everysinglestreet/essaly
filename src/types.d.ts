@@ -24,3 +24,8 @@ export interface ExecuteOsmosisInput {
   input: string;
   output: string;
 }
+
+export interface ExecuteRegenerateOverlay {
+  osmosisReadXml: string;
+  tilemakerConfig: string;
+}
