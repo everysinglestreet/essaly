@@ -55,14 +55,10 @@ export const regenerateOverlay = async ({ request }: { request: Request }): Prom
     const tilemakerInput = osmosisWritePbf;
     const tilemakerOutput = `${dirname(osmosisReadXml)}/walked.mbtiles`;
 
-    const osmosisResult = await execute({ command: `cd ${ESS_TASKING_PATH} && OSMOSIS_READ_XML=${osmosisReadXml} OSMOSIS_WRITE_PBF=${osmosisWritePbf} task osmosis:execute` });
-    const tilemakerResult = await execute({
-      command: `cd ${ESS_TASKING_PATH} && TILEMAKER_INPUT=${tilemakerInput} TILEMAKER_OUTPUT=${tilemakerOutput} TILEMAKER_CONFIG=${tilemakerConfig} task tilemaker:execute`,
+    const res = await execute({
+      command: `cd ${ESS_TASKING_PATH} && OSMOSIS_READ_XML=${osmosisReadXml} OSMOSIS_WRITE_PBF=${osmosisWritePbf} TILEMAKER_INPUT=${tilemakerInput} TILEMAKER_OUTPUT=${tilemakerOutput} TILEMAKER_CONFIG=${tilemakerConfig} task regenerate:overlay`,
     });
-    const overlayResult = await execute({ command: `cd ${ESS_TASKING_PATH} && task overlay:restart` });
-
-    const combinedResult = { osmosis: osmosisResult, tilemaker: tilemakerResult, overlay: overlayResult };
-    return { data: combinedResult, metadata: { code: 200, success: true } };
+    return { data: res, metadata: { code: 200, success: true } };
   } catch (error) {
     return { metadata: { code: 500, success: false, message: error } };
   }
