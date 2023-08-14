@@ -52,7 +52,7 @@ export const regenerateOverlay = async ({ request }: { request: Request }): Prom
     const osmosisWritePbf = `${osmosisReadXml.split('.xml')[0]}.osm.pbf`;
 
     const tilemakerInput = osmosisWritePbf;
-    const tilemakerOutput = `${osmosisReadXml.split('.xml')[0]}.mbtiles`;
+    const tilemakerOutput = 'walked.mbtiles';
 
     const osmosisResult = await execute({ command: `cd ${ESS_TASKING_PATH} && OSMOSIS_READ_XML=${osmosisReadXml} OSMOSIS_WRITE_PBF=${osmosisWritePbf} task osmosis:execute` });
     const tilemakerResult = await execute({
