@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { dirname } from 'path';
 
 import { EssalyResponse, ExecuteOsmosisInput, ExecuteRegenerateOverlay, ExecuteTilemakerInput } from '@essaly/types';
 import { APP_CONFIG } from '@essaly/util/config';
@@ -52,7 +53,7 @@ export const regenerateOverlay = async ({ request }: { request: Request }): Prom
     const osmosisWritePbf = `${osmosisReadXml.split('.xml')[0]}.osm.pbf`;
 
     const tilemakerInput = osmosisWritePbf;
-    const tilemakerOutput = 'walked.mbtiles';
+    const tilemakerOutput = `${dirname(osmosisReadXml)}/walked.mbtiles`;
 
     const osmosisResult = await execute({ command: `cd ${ESS_TASKING_PATH} && OSMOSIS_READ_XML=${osmosisReadXml} OSMOSIS_WRITE_PBF=${osmosisWritePbf} task osmosis:execute` });
     const tilemakerResult = await execute({
