@@ -1,0 +1,7 @@
+.husky
+.task
+.vscode
+cache
+dist
+node_modules
+pnpm-lock.yaml

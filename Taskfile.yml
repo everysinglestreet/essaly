@@ -1,0 +1,92 @@
+version: 3
+
+dotenv: ['.env']
+
+env:
+  NODE_ENV: test
+
+tasks:
+  default:
+    cmds:
+      - defer: { task: cleanup }
+      - task: setup
+      - task: build
+      - task: eslint
+      # - task: coverage
+
+  # preparation
+  prerequisite:
+    status:
+      - test -f ./.task/prerequisite.done
+    cmds:
+      - for package in node npm pnpm task; do which ${package} > /dev/null 2>&1; done
+      - touch ./.task/prerequisite.done
+  cleanup:
+    cmds:
+      - rm -rf dist db coverage
+      - find ./src -type f \( -name '*.js' -o -name '*.js.map' \) -delete
+  setup:
+    run: once
+    sources:
+      - package.json
+      - pnpm-lock.yaml
+    cmds:
+      - pnpm install --lockfile-only
+      - pnpm install --frozen-lockfile
+  build:
+    deps: [setup]
+    cmds:
+      - npm run build
+
+  # syntax check
+  eslint:
+    deps: [setup]
+    cmds:
+      - npm run eslint
+  prettier:
+    cmds:
+      - npm run prettier
+  syntax:check:
+    deps: [setup]
+    cmds:
+      - npm run tsc:check
+      - npm run eslint:check
+      - npm run prettier:check
+
+  # run with cli
+  dev:
+    deps: [cleanup]
+    env:
+      NODE_ENV: development
+    cmds:
+      - task: setup
+      - npm run dev
+
+  start:
+    deps: [cleanup]
+    env:
+      NODE_ENV: development
+    cmds:
+      - task: setup
+      - npm run start
+
+  stop:
+    cmds:
+      - ps aux | grep './src/index.ts' | grep -v grep | awk '{print $2}' | xargs kill -9
+
+  # test
+  unit:
+    deps: [cleanup]
+    cmds:
+      - task: setup
+      - npm run unit
+  integration:
+    deps: [cleanup]
+    cmds:
+      - task: setup
+      - npm run integration
+  coverage:
+    deps: [cleanup]
+    cmds:
+      - task: setup
+      - npm run coverage
