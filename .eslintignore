@@ -1,0 +1,8 @@
+.husky
+.task
+.vscode
+cache
+dist
+docker
+docs
+node_modules
